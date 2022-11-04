@@ -27,7 +27,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const database_1 = require("./config/database");
 const body_parser_1 = __importDefault(require("body-parser"));
 const authRoute_1 = require("./routes/authRoute");
 const dotenv = __importStar(require("dotenv"));
@@ -37,17 +36,6 @@ const port = process.env.PORT || 5000;
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(authRoute_1.AuthRoute);
-database_1.postgres
-    .initialize()
-    .then((data) => {
-    if (data.isInitialized) {
-        console.log("Database connected");
-        app.listen(port, () => {
-            console.log("Running on port 5000");
-        });
-    }
-})
-    .catch((err) => {
-    console.log("Unable to connect");
-    console.log(err);
+app.listen(port, () => {
+    console.log("Server on");
 });

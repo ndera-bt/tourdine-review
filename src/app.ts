@@ -14,17 +14,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(AuthRoute);
 
-postgres
-  .initialize()
-  .then((data) => {
-    if (data.isInitialized) {
-      console.log("Database connected");
-      app.listen(port, () => {
-        console.log("Running on port 5000");
-      });
-    }
-  })
-  .catch((err) => {
-    console.log("Unable to connect");
-    console.log(err);
-  });
+app.listen(port, () => {
+  console.log("Server on");
+});
