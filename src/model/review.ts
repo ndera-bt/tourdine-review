@@ -1,32 +1,24 @@
-import {
-  Column,
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-  ManyToOne,
-} from "typeorm";
-import { Restaurant } from "./restaurant";
-import { User } from "./user";
+import mongoose from "mongoose";
 
-@Entity("review")
-export class Review extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+const Schema = mongoose.Schema;
 
-  @Column()
-  stars: string;
+const reviewSchema = new Schema({
+  stars: {
+    type: Number,
+    required: true,
+  },
+  text: {
+    type: String,
+    required: true,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  restaurant: {
+    type: Schema.Types.ObjectId,
+    ref: "Restaurant",
+  },
+});
 
-  @Column()
-  text: string;
-
-  @ManyToOne(() => User, (user) => user.reviews, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "userId" })
-  user: User;
-
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.reviews, {
-    onDelete: "CASCADE",
-  })
-  @JoinColumn({ name: "restaurantId" })
-  restaurant: Restaurant;
-}
+module.exports = mongoose.model("Review", reviewSchema);

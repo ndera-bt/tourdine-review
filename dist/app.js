@@ -27,15 +27,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const mongoose_1 = __importDefault(require("mongoose"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const authRoute_1 = require("./routes/authRoute");
+const helmet_1 = __importDefault(require("helmet"));
+const compression_1 = __importDefault(require("compression"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: ".env" });
+const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.tp1kudq.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true&w=majority`;
 const app = (0, express_1.default)();
-const port = process.env.PORT || 5000;
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(authRoute_1.AuthRoute);
-app.listen(port, () => {
-    console.log("Server on");
+app.use((0, helmet_1.default)());
+app.use((0, compression_1.default)());
+mongoose_1.default
+    .connect(MONGODB_URI)
+    .then((result) => {
+    app.listen(process.env.PORT || 3000);
+})
+    .catch((err) => {
+    console.log(err);
 });

@@ -4,7 +4,7 @@ import { tryCatch } from "../util/tryCatch";
 
 export class AuthManager {
   static postSignup = async (req: any, res: any) => {
-    const { name, email, password, photo } = req.body;
+    const { name, email, password } = req.body;
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -15,8 +15,7 @@ export class AuthManager {
       AuthService.signup,
       name,
       email,
-      password,
-      photo
+      password
     );
 
     if (error) {

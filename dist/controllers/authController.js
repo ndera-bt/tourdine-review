@@ -19,12 +19,12 @@ class AuthManager {
 exports.AuthManager = AuthManager;
 _a = AuthManager;
 AuthManager.postSignup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, password, photo } = req.body;
+    const { name, email, password } = req.body;
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
         return res.status(500).json(errors.array()[0].msg);
     }
-    const [error, user] = yield (0, tryCatch_1.tryCatch)(authService_1.AuthService.signup, name, email, password, photo);
+    const [error, user] = yield (0, tryCatch_1.tryCatch)(authService_1.AuthService.signup, name, email, password);
     if (error) {
         return res.status(500).json(error.message);
     }

@@ -1,47 +1,54 @@
-import {
-  Column,
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  OneToMany,
-} from "typeorm";
-import { Review } from "./review";
+import mongoose from "mongoose";
 
-@Entity("restaurant")
-export class Restaurant extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+const Schema = mongoose.Schema;
 
-  @Column()
-  name: string;
+const restaurantSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  hours: {
+    type: String,
+    required: true,
+  },
+  categories: {
+    type: String,
+    required: true,
+  },
+  stars: {
+    type: String,
+    required: true,
+  },
+  website: {
+    type: String,
+    required: true,
+  },
+  review_count: {
+    type: String,
+    required: true,
+  },
+  contact: {
+    type: String,
+    required: true,
+  },
+  restaurantReviews: {
+    reviews: [
+      {
+        reviewID: {
+          type: Schema.Types.ObjectId,
+          ref: "Review",
+        },
+      },
+    ],
+  },
+});
 
-  @Column()
-  address: string;
-
-  @Column()
-  city: string;
-
-  @Column()
-  hours: string;
-
-  @Column()
-  categories: string;
-
-  @Column()
-  stars: string;
-
-  @Column()
-  website: string;
-
-  @Column()
-  review_count: number;
-
-  @OneToMany(() => Review, (review) => review.restaurant)
-  reviews: Review[];
-
-  @Column()
-  contact: string;
-
-  @Column()
-  photo: string;
-}
+module.exports = mongoose.model("Restaurant", restaurantSchema);

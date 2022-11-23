@@ -1,43 +1,26 @@
-import {
-  Column,
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  BeforeInsert,
-  AfterInsert,
-} from "typeorm";
-import { Review } from "./review";
-import { PasswordManager } from "../util/password";
+import mongoose from "mongoose";
+import * as bcrypt from "bcrypt";
 
-@Entity("user")
-export class User extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+const Schema = mongoose.Schema;
 
-  @Column()
-  name: string;
+const userSchema = new Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  reviews: {
+    type: Schema.Types.ObjectId,
+    ref: "Review",
+  },
+});
 
-  @Column({ unique: true })
-  email: string;
-
-  @Column()
-  password: string;
-
-  @Column({ nullable: true })
-  photo: string;
-
-  @OneToMany(() => Review, (review) => review.user)
-  reviews: Review[];
-
-  @BeforeInsert()
-  async hashPassword() {
-    const hashed = await PasswordManager.hash(this.password);
-    this.password = hashed;
-  }
-
-  @AfterInsert()
-  returnOptions() {
-    (this.password = ""), (this.id = "");
-  }
-}
+export default mongoose.model("User", userSchema);
