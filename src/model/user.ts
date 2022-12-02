@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { deleteModel } from "mongoose";
 import * as bcrypt from "bcrypt";
 
 const Schema = mongoose.Schema;

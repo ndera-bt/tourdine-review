@@ -22,6 +22,8 @@ export class AuthManager {
       return res.status(500).json(error.message);
     }
 
-    return res.status(201).json({ msg: "Account created successfully", user });
+    return res
+      .status(201)
+      .json({ msg: "Account created successfully", userId: user._id });
   };
 }
